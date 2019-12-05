@@ -1,0 +1,21 @@
+#!/bin/bash
+
+## Make sure the correct python environment is active.
+
+
+## See https://automl.github.io/HpBandSter/build/html/auto_examples/example_4_cluster.html
+export NIC=eno1 ## name of NIC to use.
+export nJOBS=56 ## Number of cores used in training.
+export nWORKERS=1 ## Number of concurrent BOHB workers.  (Should always be 1 as coded)
+
+for VAR in {1..54}
+do 
+	export dataID=$(awk '{print $1}' dataID_100Friendly.dat | sed "${VAR} q;d")
+  echo ${dataID}
+  python bohb_run.py --nic_name $NIC --n_jobs $nJOBS \
+    --n_workers $nWORKERS \
+    --openml_dataid $dataID \
+    --run_id $dataID --shared_directory output
+done
+
+python msg.py
