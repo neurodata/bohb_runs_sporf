@@ -40,7 +40,7 @@ with open('neurodata-slackr.conf', 'r') as fp:
     slack_channel = fp.readline().strip()
 
 slack = Slacker(slack_token)
-host = socket.gethostname()
+host_name = socket.gethostname()
 
 
 
@@ -62,9 +62,12 @@ args=parser.parse_args()
 # Every process has to lookup the hostname
 host = hpns.nic_name_to_host(args.nic_name)
 
+if host_name == "synaptomes1":
+    prefix = "syn1"
+else:
+    prefix = "test_run"
 
-#outputName = "marcc_BOHB_" + f"openmlCC18_d_{str(args.openml_dataid)}"
-outputName = "test_run_" + f"openmlCC18_d_{str(args.openml_dataid)}"
+outputName = f"{prefix}_openml_d_{str(args.openml_dataid)}"
 
 
 # Step 1: Start a nameserver (see example_1)
@@ -129,7 +132,7 @@ NS.shutdown()
 
 
 ## Send slack message
-slack.chat.post_message(slack_channel, f'`{host}`: Finished openml_d_{args.openml_dataid}')
+slack.chat.post_message(slack_channel, f'`{host_name}`: Finished openml_d_{args.openml_dataid}')
 
 
 
