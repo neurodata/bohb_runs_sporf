@@ -2,6 +2,7 @@ import os
 import logging
 logging.basicConfig(level=logging.WARNING)
 
+import socket
 import argparse
 import pickle
 
@@ -30,6 +31,17 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 
 from rerf.rerfClassifier import rerfClassifier
+
+from slacker import Slacker
+
+### Set up slacker for status updates
+with open('neurodata-slackr.conf', 'r') as fp:
+    slack_token = fp.readline().strip()
+    slack_channel = fp.readline().strip()
+
+slack = Slacker(slack_token)
+host = socket.gethostname()
+
 
 
 
@@ -116,7 +128,8 @@ bohb.shutdown(shutdown_workers=True)
 NS.shutdown()
 
 
-
+## Send slack message
+slack.chat.post_message(slack_channel, f'`{host}`: Finished openml_d_{args.openml_dataid}')
 
 
 
