@@ -12,8 +12,6 @@ host = socket.gethostname()
 slack.chat.post_message(slack_channel, f'`{host}`\t Finished a run :partyparrot:')
 
 
-slack.chat.post_message(slack_channel, f'`{host}`: Finished openml_d_{None}')
-
 '''
 The *.conf file should look like
 
