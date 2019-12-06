@@ -7,7 +7,7 @@ with open('../neurodata-slackr.conf', 'r') as fp:
 
 slack = Slacker(slack_token)
 
-slack.chat.post_message(slack_channel, '\n\n :partyparrot: Finished a run.')
+slack.chat.post_message(slack_channel, '\n\n :partyparrot: Finished a dataset.')
 
 
 

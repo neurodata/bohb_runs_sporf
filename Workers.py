@@ -17,7 +17,7 @@ from rerf.rerfClassifier import rerfClassifier
 
 '''
 
-X, y, X_test, y_test = getID(dataID = 15, test_size = 0.5, random_seed = 1234)
+X, y, X_test, y_test = getID(dataID = 15, test_size = 0.5, val_size = 0.2, random_seed = 1234)
 
 '''
 
@@ -33,7 +33,7 @@ def getTimes(res):
     return(out)
 
 
-def getID(dataID = 6, test_size = 0.5, random_seed = 1234):
+def getID(dataID = 6, test_size = 0.3, val_size = 0.2, random_seed = 1234):
 
     dataset = openml.datasets.get_dataset(dataID)
 
@@ -44,35 +44,34 @@ def getID(dataID = 6, test_size = 0.5, random_seed = 1234):
     print(dataset.description[:500])
     print("\n\n\n")
 
-    X, Y, attribute_names,_ = dataset.get_data(target=dataset.default_target_attribute)
+    ## X_original, Y_original
+    Xo, Yo, attribute_names,_ = dataset.get_data(target=dataset.default_target_attribute)
 
-    if Y.dtype.name == "category":
-        y = Y.cat.codes
+    if Yo.dtype.name == "category":
+        y = Yo.cat.codes
     else:
-        y = Y
+        y = Yo
 
-
-    X, X_test, y, y_test = train_test_split(X, y, test_size = test_size,\
-                                            random_state = random_seed) 
-
-    if X.isna().sum().sum() > 0:
-        ind = ~X.isna().any(axis = 1)
-        X.dropna(inplace = True)
+    if Xo.isna().sum().sum() > 0:
+        ind = ~Xo.isna().any(axis = 1)
+        Xo.dropna(inplace = True)
         y = y[ind]
         
-    if X_test.isna().sum().sum() > 0:
-        ind_test = ~X_test.isna().any(axis = 1)
-        X_test.dropna(inplace = True)
-        y_test = y_test[ind_test]
 
-    if numpy.any(X.dtypes == 'category'):
-        cat_columns = X.select_dtypes(['category']).columns
+    if numpy.any(Xo.dtypes == 'category'):
+        cat_columns = Xo.select_dtypes(['category']).columns
 
-        X[cat_columns] = X[cat_columns].apply(lambda x: x.cat.codes)
-        X_test[cat_columns] = X_test[cat_columns].apply(lambda x: x.cat.codes)
+        Xo[cat_columns] = Xo[cat_columns].apply(lambda x: x.cat.codes)
 
-    
-    return(X, y, X_test, y_test)
+
+    Xa, X_test, ya, y_test = train_test_split(Xo, y, test_size = test_size,\
+                                              random_state = random_seed) 
+
+    ## Further subset into train and validation
+    X, X_val, y, y_val = train_test_split(Xa, ya, test_size = val_size,\
+                                          random_state = random_seed)
+
+    return(X, y, X_val, y_val, X_test, y_test)
 
 
 
@@ -85,7 +84,9 @@ class allWorker(Worker):
         self.n_jobs = n_jobs
         self.dataID = dataID 
 
-        self.X, self.y, self.X_test, self.y_test = getID(dataID = self.dataID, test_size = 0.5, random_seed = 0)
+        self.X, self.y, self.X_val, self.y_val, self.X_test, self.y_test =\
+          getID(dataID = self.dataID, test_size = 0.5, val_size = 0.2,\
+                random_seed = 0)
 
 
 
@@ -112,6 +113,7 @@ class allWorker(Worker):
                                          n_jobs = self.n_jobs,\
                                          max_features = config['max_features_sk'],\
                                          max_depth = config['max_depth'])
+
         elif config['clf'] == "sporf": 
             clf = rerfClassifier(n_estimators = int(budget),\
                                  max_features = config['max_features_sporf'],\
@@ -127,15 +129,19 @@ class allWorker(Worker):
         train_pred = clf.predict(self.X)
         train_accuracy = metrics.accuracy_score(self.y, train_pred)
 
-        yhat = clf.predict(self.X_test)
 
-        res = metrics.accuracy_score(self.y_test, yhat)
+        y_val_hat = clf.predict(self.X_val)
+        val_accuracy = metrics.accuracy_score(self.y_val, y_val_hat)
+
+        y_test_hat = clf.predict(self.X_test)
+        test_accuracy = metrics.accuracy_score(self.y_test, y_test_hat)
 
         return({  
                     # this is the a mandatory field to run hyperband
-                    'loss': float(1-res),
+                    'loss': float(1-val_accuracy),
                     # can be used for any user-defined information - also mandatory
-                    'info': {"test_accuracy": res, 
+                    'info': {"test_accuracy" : test_accuracy, 
+                             "val_accuracy"  : val_accuracy, 
                              "train_accuracy": train_accuracy,
                             }  
                 })
