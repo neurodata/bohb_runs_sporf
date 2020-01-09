@@ -141,7 +141,7 @@ class allWorker(Worker):
                     'loss': float(1-val_accuracy),
                     # can be used for any user-defined information - also mandatory
                     'info': {
-                             "test_loss" : 1 - test_accuracy,
+                             "test_loss": float(1 - test_accuracy),
                              "test_accuracy" : test_accuracy,
                              "val_accuracy"  : val_accuracy,
                              "train_accuracy": train_accuracy,
