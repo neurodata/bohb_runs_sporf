@@ -50,12 +50,12 @@ parser.add_argument('--min_budget',   type=int, help='Minimum budget used during
 parser.add_argument('--max_budget',   type=int, help='Maximum budget used during the optimization.',    default=500)
 parser.add_argument('--n_iterations', type=int,   help='Number of iterations performed by the optimizer', default=10)
 parser.add_argument('--n_workers', type=int,   help='Number of workers to run in parallel.', default=1)
-parser.add_argument('--n_jobs', type=int,   help='Number of threads given to training.')
+parser.add_argument('--n_jobs', type=int,   help='Number of threads given to training.', default = 1)
 parser.add_argument('--openml_dataid', type=int, help='OpenML-DataID.', default = 15)
 parser.add_argument('--nic_name',type=str, help='Which network interface to use for communication.', default = "en4")
 parser.add_argument('--run_id', type=int,   help='run ID.', default=1)
-parser.add_argument('--shared_directory',type=str, help='A directory that is accessible for all processes, e.g. a NFS share.')
-parser.add_argument('--worker', help='Flag to turn this into a worker process', action='store_true')
+parser.add_argument('--shared_directory',type=str, help='A directory that is accessible for all processes, e.g. a NFS share.', default="output")
+#parser.add_argument('--worker', help='Flag to turn this into a worker process', action='store_true')
 
 args=parser.parse_args()
 

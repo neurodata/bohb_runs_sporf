@@ -140,8 +140,10 @@ class allWorker(Worker):
                     # this is the a mandatory field to run hyperband
                     'loss': float(1-val_accuracy),
                     # can be used for any user-defined information - also mandatory
-                    'info': {"test_accuracy" : test_accuracy, 
-                             "val_accuracy"  : val_accuracy, 
+                    'info': {
+                             "test_loss" : 1 - test_accuracy,
+                             "test_accuracy" : test_accuracy,
+                             "val_accuracy"  : val_accuracy,
                              "train_accuracy": train_accuracy,
                             }  
                 })
