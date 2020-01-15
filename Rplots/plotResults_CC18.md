@@ -95,7 +95,7 @@ marDiff <- data.table(margin, ids)
 
 Using [OpenML Study 99 -- CC18](https://www.openml.org/s/99), the following data IDs were run:
 
-3, 6, 12, 14, 16, 18, 22, 28, 29, 31, 32, 37, 44, 46, 50, 54, 151, 182, 188, 300, 307, 458, 554, 1049, 1050, 1053, 1063, 1067, 1068, 1461, 1464, 1468, 1475, 1478, 1480, 1485, 1486, 1487, 1489, 1494, 1497, 1501, 1510, 1590, 4134, 4534, 4538, 6332, 23381, 23517, 40499, 40668, 40670, 40701, 40923.
+3, 6, 12, 14, 16, 18, 22, 28, 29, 31, 32, 37, 44, 46, 50, 54, 151, 182, 188, 300, 307, 458, 554, 1049, 1050, 1053, 1063, 1067, 1068, 1461, 1464, 1468, 1475, 1478, 1480, 1485, 1486, 1487, 1489, 1494, 1497, 1501, 1510, 1590, 4134, 4534, 4538, 6332, 23381, 23517, 40499, 40668, 40670, 40701, 40923, 40927, 40966, 40975, 40978, 40979, 40982, 40983, 40984, 40994.
 
 
 ## A random sample of runs plotted with jittered violin plots
@@ -137,42 +137,18 @@ do.call(grid.arrange, p)
 
 ![](plotResults_CC18_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Links_to_datasets </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> [1494](https://openml.org/d/1494) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [1590](https://openml.org/d/1590) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [37](https://openml.org/d/37) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [1494](https://openml.org/d/1494) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [44](https://openml.org/d/44) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [1475](https://openml.org/d/1475) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [182](https://openml.org/d/182) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [23517](https://openml.org/d/23517) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [554](https://openml.org/d/554) </td>
-  </tr>
-</tbody>
-</table>
+
+|Links_to_datasets                   |
+|:-----------------------------------|
+|[1494](https://openml.org/d/1494)   |
+|[1494](https://openml.org/d/1494)   |
+|[1487](https://openml.org/d/1487)   |
+|[23517](https://openml.org/d/23517) |
+|[1485](https://openml.org/d/1485)   |
+|[54](https://openml.org/d/54)       |
+|[40499](https://openml.org/d/40499) |
+|[44](https://openml.org/d/44)       |
+|[31](https://openml.org/d/31)       |
 
 
 ## A histogram showing the differnce in loss, i.e. ((loss(SKRF) - loss(SPORF))
@@ -222,24 +198,12 @@ ggplot(data = tmp, aes(x = 1:length(ids), y = margin, color = SporfOutcome, labe
 
 ![A scatter-plot showing the magnitide difference in losses between the two algorithms, ties at zero.](plotResults_CC18_files/figure-html/unnamed-chunk-4-1.png)
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> extreme_points </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> [23381](https://openml.org/d/23381) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [307](https://openml.org/d/307) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> [54](https://openml.org/d/54) </td>
-  </tr>
-</tbody>
-</table>
+
+|extreme_points                      |
+|:-----------------------------------|
+|[23381](https://openml.org/d/23381) |
+|[307](https://openml.org/d/307)     |
+|[54](https://openml.org/d/54)       |
 
 
 
@@ -253,7 +217,7 @@ table(marDiff$margin >= 0)[2:1]
 ```
 ## 
 ##  TRUE FALSE 
-##    34    21
+##    39    25
 ```
 
 ```r
@@ -263,7 +227,7 @@ table(marDiff$margin > 0)[2:1]
 ```
 ## 
 ##  TRUE FALSE 
-##    31    24
+##    36    28
 ```
 
 ## Calculating a $p$-value
@@ -280,7 +244,7 @@ q1 <- table(marDiff$margin > 0)[2]
 pval <- 1 - pbinom(q = q1, size = nprime, prob = 0.5)
 ```
 
-## The $p$-value is 0.0631735
+## The $p$-value is 0.0618657
 
 
 ---
@@ -317,29 +281,12 @@ kable(
 )
 ```
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> FALSE </th>
-   <th style="text-align:right;"> TRUE </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> FALSE </td>
-   <td style="text-align:right;"> 19 </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> TRUE </td>
-   <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 21 </td>
-  </tr>
-</tbody>
-</table>
+         FALSE   TRUE
+------  ------  -----
+FALSE       21     12
+TRUE         7     24
 
-The diagonal reads `sklearn` won on time and loss 19 times (including ties), and `sporf` won on time and loss 21 times.
+The diagonal reads `sklearn` won on time and loss 21 times (including ties), and `sporf` won on time and loss 24 times.
 
 
 <!--
