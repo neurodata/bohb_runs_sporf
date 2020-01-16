@@ -95,7 +95,7 @@ marDiff <- data.table(margin, ids)
 
 Using [OpenML Study 99 -- CC18](https://www.openml.org/s/99), the following data IDs were run:
 
-3, 6, 12, 14, 16, 18, 22, 28, 29, 31, 32, 37, 44, 46, 50, 54, 151, 182, 188, 300, 307, 458, 554, 1049, 1050, 1053, 1063, 1067, 1068, 1461, 1464, 1468, 1475, 1478, 1480, 1485, 1486, 1487, 1489, 1494, 1497, 1501, 1510, 1590, 4134, 4534, 4538, 6332, 23381, 23517, 40499, 40668, 40670, 40701, 40923, 40927, 40966, 40975, 40978, 40979, 40982, 40983, 40984, 40994.
+3, 6, 12, 14, 16, 18, 22, 28, 29, 31, 32, 37, 44, 46, 50, 54, 151, 182, 188, 300, 307, 458, 554, 1049, 1050, 1053, 1063, 1067, 1068, 1461, 1464, 1468, 1475, 1478, 1480, 1485, 1486, 1487, 1489, 1494, 1497, 1501, 1510, 1590, 4134, 4534, 4538, 6332, 23381, 23517, 40499, 40668, 40670, 40701, 40923, 40927, 40966, 40975, 40978, 40979, 40982, 40983, 40984, 40994, 40996, 41027.
 
 
 ## A random sample of runs plotted with jittered violin plots
@@ -141,14 +141,14 @@ do.call(grid.arrange, p)
 |Links_to_datasets                   |
 |:-----------------------------------|
 |[1494](https://openml.org/d/1494)   |
-|[1494](https://openml.org/d/1494)   |
-|[1487](https://openml.org/d/1487)   |
-|[23517](https://openml.org/d/23517) |
-|[1485](https://openml.org/d/1485)   |
-|[54](https://openml.org/d/54)       |
-|[40499](https://openml.org/d/40499) |
-|[44](https://openml.org/d/44)       |
-|[31](https://openml.org/d/31)       |
+|[1461](https://openml.org/d/1461)   |
+|[1063](https://openml.org/d/1063)   |
+|[1053](https://openml.org/d/1053)   |
+|[151](https://openml.org/d/151)     |
+|[40994](https://openml.org/d/40994) |
+|[1486](https://openml.org/d/1486)   |
+|[6332](https://openml.org/d/6332)   |
+|[4534](https://openml.org/d/4534)   |
 
 
 ## A histogram showing the differnce in loss, i.e. ((loss(SKRF) - loss(SPORF))
@@ -217,7 +217,7 @@ table(marDiff$margin >= 0)[2:1]
 ```
 ## 
 ##  TRUE FALSE 
-##    39    25
+##    41    25
 ```
 
 ```r
@@ -227,7 +227,7 @@ table(marDiff$margin > 0)[2:1]
 ```
 ## 
 ##  TRUE FALSE 
-##    36    28
+##    38    28
 ```
 
 ## Calculating a $p$-value
@@ -244,7 +244,7 @@ q1 <- table(marDiff$margin > 0)[2]
 pval <- 1 - pbinom(q = q1, size = nprime, prob = 0.5)
 ```
 
-## The $p$-value is 0.0618657
+## The $p$-value is 0.0384629
 
 
 ---
@@ -284,9 +284,9 @@ kable(
          FALSE   TRUE
 ------  ------  -----
 FALSE       21     12
-TRUE         7     24
+TRUE         7     26
 
-The diagonal reads `sklearn` won on time and loss 21 times (including ties), and `sporf` won on time and loss 24 times.
+The diagonal reads `sklearn` won on time and loss 21 times (including ties), and `sporf` won on time and loss 26 times.
 
 
 <!--
